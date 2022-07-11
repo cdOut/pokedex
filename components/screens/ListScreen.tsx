@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {FlatList, SafeAreaView} from 'react-native';
+import {ThemeContext} from '../../App';
 import PokemonCard from '../PokemonCard';
 
 interface ILayout {
@@ -17,6 +18,8 @@ interface IItem {
 
 const ListScreen = () => {
   const [pokemonList, setPokemonList] = useState<object[]>([]);
+
+  const theme = useContext(ThemeContext);
 
   const fetchPokemonList = async () => {
     const response = await fetch(
@@ -48,6 +51,7 @@ const ListScreen = () => {
     <>
       <SafeAreaView>
         <FlatList
+          style={{backgroundColor: theme.primary}}
           onScroll={({nativeEvent}) => {
             if (isCloseToBottom(nativeEvent)) {
               fetchPokemonList();

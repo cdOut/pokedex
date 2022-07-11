@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -7,8 +8,8 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
-  AsyncStorage,
 } from 'react-native';
+import {ThemeContext} from '../../App';
 
 interface IPokemonData {
   name: string;
@@ -27,6 +28,8 @@ interface IType {
 }
 
 const SelectScreen = (props: {route?: any}) => {
+  const theme = useContext(ThemeContext);
+
   const [pokemonData, setPokemonData] = useState<IPokemonData>(
     {} as IPokemonData,
   );
@@ -85,45 +88,55 @@ const SelectScreen = (props: {route?: any}) => {
 
   return (
     <SafeAreaView>
-      <View style={styles.selectContainer}>
+      <View
+        style={[styles.selectContainer, {backgroundColor: theme.secondary}]}>
         {!isDataEmpty() && (
           <Image
             style={styles.selectImage}
             source={{uri: pokemonData.sprites.front_default}}
           />
         )}
-        <Text style={styles.selectText}>
+        <Text style={[styles.selectText, {color: theme.text}]}>
           {!isDataEmpty() ? pokemonData.name : 'No favorites found'}
         </Text>
         {!isDataEmpty() && (
           <Button
             title={!isFavorite() ? 'Favorite' : 'Unfavorite'}
             onPress={handleFavoriteButton}
+            color={theme.accent}
           />
         )}
         {props.route.params !== undefined && !isDataEmpty() && (
           <View style={styles.statSubsection}>
-            <Text style={styles.statTitle}>Stats</Text>
+            <Text style={[styles.statTitle, {color: theme.text}]}>Stats</Text>
             {pokemonData.stats.map((stat: IStat) => {
               return (
                 <View style={styles.statContainer} key={stat.stat.name}>
-                  <Text style={styles.statLabel}>
+                  <Text style={[styles.statLabel, {color: theme.text}]}>
                     {stat.stat.name.replace('-', ' ').toUpperCase()}
                   </Text>
-                  <Text style={styles.statValue}>{stat.base_stat}</Text>
+                  <Text style={[styles.statValue, {color: theme.text}]}>
+                    {stat.base_stat}
+                  </Text>
                 </View>
               );
             })}
-            <Text style={styles.statTitle}>Types</Text>
+            <Text style={[styles.statTitle, {color: theme.text}]}>Types</Text>
             <View style={styles.typeContainer}>
               {pokemonData.types.map((type: IType) => {
-                return <Text style={styles.typeValue}>{type.type.name}</Text>;
+                return (
+                  <Text
+                    key={type.type.name}
+                    style={[styles.typeValue, {color: theme.text}]}>
+                    {type.type.name}
+                  </Text>
+                );
               })}
             </View>
           </View>
         )}
         {isDataEmpty() && (
-          <Text style={styles.selectDescription}>
+          <Text style={[styles.selectDescription, {color: theme.text}]}>
             Select your favorite pokemon from the pokedex and it will appear
             here.
           </Text>
