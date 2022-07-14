@@ -1,28 +1,27 @@
-import React, {createContext} from 'react';
-import AppView from './components/AppView';
+import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
+import AppView from './src/components/AppView';
 
-export const themes = {
-  light: {
-    primary: '#F5F5F5',
-    secondary: '#E0E0E0',
-    text: '#3C3C3C',
-    accent: '#FF5A5F',
-  },
-  dark: {
-    primary: '#2f323a',
-    secondary: '#494E5A',
-    text: '#ebebeb',
-    accent: '#FF5A5F',
-  },
-};
+interface IContext {
+  favorite: {name: string; id: string} | undefined;
+  setFavorite: Dispatch<SetStateAction<undefined>>;
+}
 
-export const ThemeContext = createContext(themes.light);
+export const AppContext = createContext<IContext>({
+  favorite: undefined,
+  setFavorite: () => {},
+});
 
 const App = () => {
+  const [favorite, setFavorite] = useState();
+
   return (
-    <ThemeContext.Provider value={themes.dark}>
+    <AppContext.Provider
+      value={{
+        favorite: favorite,
+        setFavorite: setFavorite,
+      }}>
       <AppView />
-    </ThemeContext.Provider>
+    </AppContext.Provider>
   );
 };
 
