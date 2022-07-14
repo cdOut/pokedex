@@ -4,8 +4,13 @@ export const saveStorageData = async (storageKey: string, value: string) => {
   await AsyncStorage.setItem(storageKey, value);
 };
 
-export const getStorageData = async (storageKey: string) => {
+export const getStorageData = async (
+  storageKey: string,
+): Promise<string | undefined> => {
   const value = await AsyncStorage.getItem(storageKey);
+  if (!value || value === 'undefined') {
+    return undefined;
+  }
   return value;
 };
 

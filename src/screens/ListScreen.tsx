@@ -6,28 +6,40 @@ import COLORS from '../styles/Colors';
 import {LISTSTYLES, STYLES, TXTSTYLES} from '../styles/Styles';
 import {fetchPokemonData} from '../utils/Utils';
 
-interface IItem {
+export interface IPokemon {
   id: string;
   name: string;
-  type: string;
+  types: string[];
+  weight: number;
+  height: number;
+  moves: string[];
+  stats: number[];
 }
 
 const ListScreen = () => {
-  const [pokemonList, setPokemonList] = useState<IItem[]>([]);
+  const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
   const [searched, setSearched] = useState<string>();
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchPokemonList = useCallback(async (offset: number) => {
     setRefreshing(true);
-    let fetched: IItem[] = [];
+    let fetched: IPokemon[] = [];
     for (let i = 1; i <= 15; i++) {
       const result = await fetchPokemonData((offset + i).toString());
-      let item: IItem = {
+      let pokemon: IPokemon = {
         id: result.id,
         name: result.name,
-        type: result.types[0].type.name.toUpperCase(),
+        types: result.types.map((type: {type: {name: string}}) =>
+          type.type.name.toUpperCase(),
+        ),
+        weight: result.weight,
+        height: result.height,
+        moves: result.abilities.map(
+          (ability: {ability: {name: string}}) => ability.ability.name,
+        ),
+        stats: result.stats.map((stat: {base_stat: number}) => stat.base_stat),
       };
-      fetched.push(item);
+      fetched.push(pokemon);
     }
     setPokemonList(prev => [...prev, ...fetched]);
     setRefreshing(false);
@@ -43,7 +55,7 @@ const ListScreen = () => {
         <View style={LISTSTYLES.titleContainer}>
           <Image
             style={LISTSTYLES.titleImage}
-            source={require('../assets/images/Pokeball.png')}
+            source={require('../assets/images/PokeballIcon.png')}
           />
           <Text style={TXTSTYLES.bigtitle}>Pokédex</Text>
         </View>
@@ -69,13 +81,8 @@ const ListScreen = () => {
               RegExp((searched ? searched : '').toLowerCase()),
             );
           })}
-          renderItem={({item}) => (
-            <PokemonCard
-              key={item.name}
-              name={item.name}
-              id={item.id}
-              type={item.type}
-            />
+          renderItem={({item}: {item: IPokemon}) => (
+            <PokemonCard pokemon={item} />
           )}
           horizontal={false}
           numColumns={3}

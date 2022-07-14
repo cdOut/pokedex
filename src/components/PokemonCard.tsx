@@ -8,16 +8,9 @@ import {CARDSTYLES} from '../styles/Styles';
 import COLORS from '../styles/Colors';
 import Animated, {ZoomIn} from 'react-native-reanimated';
 import FadeInImage from './FadeInImage';
+import {IPokemon} from '../screens/ListScreen';
 
-const PokemonCard = ({
-  name,
-  id,
-  type,
-}: {
-  name: string;
-  id: string;
-  type: string;
-}) => {
+const PokemonCard = ({pokemon}: {pokemon: IPokemon}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<CardParamStackList>>();
 
@@ -26,22 +19,28 @@ const PokemonCard = ({
       entering={ZoomIn}
       style={[
         CARDSTYLES.container,
-        {borderColor: COLORS[type as keyof typeof COLORS]},
+        {borderColor: COLORS[pokemon.types[0] as keyof typeof COLORS]},
       ]}>
       <TouchableOpacity
-        key={id}
-        onPress={() => navigation.navigate('Select', {name: name, id: id})}>
+        key={pokemon.id}
+        onPress={() => navigation.navigate('Select', {pokemon: pokemon})}>
         <Text
-          style={[CARDSTYLES.id, {color: COLORS[type as keyof typeof COLORS]}]}>
-          #{stringifyPokemonId(id)}
+          style={[
+            CARDSTYLES.id,
+            {color: COLORS[pokemon.types[0] as keyof typeof COLORS]},
+          ]}>
+          #{stringifyPokemonId(pokemon.id)}
         </Text>
-        <FadeInImage styles={CARDSTYLES.image} url={getPokemonImage(id)} />
+        <FadeInImage
+          styles={CARDSTYLES.image}
+          url={getPokemonImage(pokemon.id)}
+        />
         <View
           style={[
             CARDSTYLES.title,
-            {backgroundColor: COLORS[type as keyof typeof COLORS]},
+            {backgroundColor: COLORS[pokemon.types[0] as keyof typeof COLORS]},
           ]}>
-          <Text style={CARDSTYLES.text}>{name}</Text>
+          <Text style={CARDSTYLES.text}>{pokemon.name}</Text>
         </View>
       </TouchableOpacity>
     </Animated.View>

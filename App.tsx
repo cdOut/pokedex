@@ -1,9 +1,18 @@
-import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import AppView from './src/components/AppView';
+import {IPokemon} from './src/screens/ListScreen';
+import {getStorageData, STORAGE_FAVORITE} from './src/utils/Storage';
 
 interface IContext {
-  favorite: {name: string; id: string} | undefined;
-  setFavorite: Dispatch<SetStateAction<undefined>>;
+  favorite: IPokemon | undefined;
+  setFavorite: Dispatch<SetStateAction<IPokemon | undefined>>;
 }
 
 export const AppContext = createContext<IContext>({
@@ -12,7 +21,20 @@ export const AppContext = createContext<IContext>({
 });
 
 const App = () => {
-  const [favorite, setFavorite] = useState();
+  const [favorite, setFavorite] = useState<IPokemon | undefined>();
+
+  const getFavoritePokemon = useCallback(async () => {
+    let result = await getStorageData(STORAGE_FAVORITE);
+    if (result) {
+      setFavorite(JSON.parse(result));
+    } else if (result === undefined) {
+      setFavorite(result);
+    }
+  }, []);
+
+  useEffect(() => {
+    getFavoritePokemon();
+  }, [getFavoritePokemon]);
 
   return (
     <AppContext.Provider

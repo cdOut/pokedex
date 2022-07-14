@@ -1,10 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import ListScreen from '../screens/ListScreen';
+import ListScreen, {IPokemon} from '../screens/ListScreen';
 import SelectScreen from '../screens/SelectScreen';
 
 export type CardParamStackList = {
-  Select: {name: string; id: string};
+  Select: {pokemon: IPokemon};
 };
 
 const NativeStack = createNativeStackNavigator();
@@ -18,7 +18,7 @@ const ListStack = () => {
         component={ListScreen}
       />
       <NativeStack.Screen
-        options={{title: 'Pokemon'}}
+        options={{headerShown: false}}
         name="Select"
         component={SelectScreen}
       />
