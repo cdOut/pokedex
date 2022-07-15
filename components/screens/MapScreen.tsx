@@ -42,6 +42,7 @@ const MapScreen = () => {
       name: '',
       id: 0,
     };
+    infoCancel();
     setMarking(true);
     setMarkerData(marker);
   };
