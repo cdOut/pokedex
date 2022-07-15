@@ -1,46 +1,28 @@
-import React from 'react';
-import ListScreen from './components/screens/ListScreen';
-import SelectScreen from './components/screens/SelectScreen';
-import MapScreen from './components/screens/MapScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {createContext} from 'react';
+import AppView from './components/AppView';
 
-const RootStack = createBottomTabNavigator();
-const NativeStack = createNativeStackNavigator();
+export const themes = {
+  light: {
+    primary: '#F5F5F5',
+    secondary: '#E0E0E0',
+    text: '#3C3C3C',
+    accent: '#FF5A5F',
+  },
+  dark: {
+    primary: '#2f323a',
+    secondary: '#494E5A',
+    text: '#ebebeb',
+    accent: '#FF5A5F',
+  },
+};
+
+export const ThemeContext = createContext(themes.light);
 
 const App = () => {
-  const ListStack = () => {
-    return (
-      <NativeStack.Navigator initialRouteName="List">
-        <NativeStack.Screen
-          options={{headerShown: false}}
-          name="Pokedex"
-          component={ListScreen}
-        />
-        <NativeStack.Screen
-          options={{title: 'Pokemon'}}
-          name="Select"
-          component={SelectScreen}
-        />
-      </NativeStack.Navigator>
-    );
-  };
-
   return (
-    <NavigationContainer>
-      <RootStack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="ListStack">
-        <RootStack.Screen name="Favorite" component={SelectScreen} />
-        <RootStack.Screen
-          options={{title: 'Pokedex'}}
-          name="ListStack"
-          component={ListStack}
-        />
-        <RootStack.Screen name="Map" component={MapScreen} />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <ThemeContext.Provider value={themes.dark}>
+      <AppView />
+    </ThemeContext.Provider>
   );
 };
 

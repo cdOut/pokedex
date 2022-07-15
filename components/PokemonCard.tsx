@@ -1,9 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {ThemeContext} from '../App';
 
 const PokemonCard = (props: {name: string; url: string}) => {
+  const theme = useContext(ThemeContext);
+
   const getPokemonId = () => {
     const urlArray = props.url.split('/');
     return urlArray[urlArray.length - 2];
@@ -22,11 +25,11 @@ const PokemonCard = (props: {name: string; url: string}) => {
 
   return (
     <TouchableOpacity
-      style={styles.cardContainer}
+      style={[styles.cardContainer, {backgroundColor: theme.secondary}]}
       key={props.name}
       onPress={() => navigation.navigate('Select', {url: props.url})}>
       <Image style={styles.cardImage} source={{uri: getPokemonImage()}} />
-      <Text style={styles.cardTitle}>{props.name}</Text>
+      <Text style={[styles.cardTitle, {color: theme.text}]}>{props.name}</Text>
     </TouchableOpacity>
   );
 };
