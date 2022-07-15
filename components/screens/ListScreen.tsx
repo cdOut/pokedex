@@ -1,70 +1,42 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {FlatList, SafeAreaView} from 'react-native';
 import {ThemeContext} from '../../App';
 import PokemonCard from '../PokemonCard';
 
-interface ILayout {
-  layoutMeasurement: {height: number};
-  contentOffset: {y: number};
-  contentSize: {height: number};
-}
-
-interface IItem {
-  item: {
-    name: string;
-    url: string;
-  };
-}
+type Item = {
+  name: string;
+  url: string;
+};
 
 const ListScreen = () => {
-  const [pokemonList, setPokemonList] = useState<object[]>([]);
+  const [pokemonList, setPokemonList] = useState<Item[]>([]);
 
   const theme = useContext(ThemeContext);
 
-  const fetchPokemonList = async () => {
+  const fetchPokemonList = useCallback(async (offset: number) => {
     const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${pokemonList.length}`,
+      `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`,
     );
     const json = await response.json();
-    setPokemonList([...pokemonList, ...json.results]);
-  };
-
-  // this works, had to block eslint
-  useEffect(() => {
-    fetchPokemonList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setPokemonList(prev => [...prev, ...json.results]);
   }, []);
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }: ILayout) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
-  };
+  useEffect(() => {
+    fetchPokemonList(0);
+  }, [fetchPokemonList]);
 
   return (
     <>
       <SafeAreaView>
         <FlatList
           style={{backgroundColor: theme.primary}}
-          onScroll={({nativeEvent}) => {
-            if (isCloseToBottom(nativeEvent)) {
-              fetchPokemonList();
-            }
-          }}
-          scrollEventThrottle={400}
-          data={pokemonList as []}
-          renderItem={({item}: IItem) => (
-            <PokemonCard name={item.name} url={item.url} />
+          onEndReached={() => fetchPokemonList(pokemonList.length)}
+          data={pokemonList}
+          renderItem={({item}) => (
+            <PokemonCard key={item.name} name={item.name} url={item.url} />
           )}
           horizontal={false}
           numColumns={2}
-          onEndReachedThreshold={0}
         />
       </SafeAreaView>
     </>
