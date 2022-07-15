@@ -13,6 +13,17 @@ import {
 interface IPokemonData {
   name: string;
   sprites: {front_default: string};
+  stats: [];
+  types: [];
+}
+
+interface IStat {
+  base_stat: number;
+  stat: {name: string};
+}
+
+interface IType {
+  type: {name: string};
 }
 
 const SelectScreen = (props: {route?: any}) => {
@@ -90,6 +101,27 @@ const SelectScreen = (props: {route?: any}) => {
             onPress={handleFavoriteButton}
           />
         )}
+        {props.route.params !== undefined && !isDataEmpty() && (
+          <View style={styles.statSubsection}>
+            <Text style={styles.statTitle}>Stats</Text>
+            {pokemonData.stats.map((stat: IStat) => {
+              return (
+                <View style={styles.statContainer} key={stat.stat.name}>
+                  <Text style={styles.statLabel}>
+                    {stat.stat.name.replace('-', ' ').toUpperCase()}
+                  </Text>
+                  <Text style={styles.statValue}>{stat.base_stat}</Text>
+                </View>
+              );
+            })}
+            <Text style={styles.statTitle}>Types</Text>
+            <View style={styles.typeContainer}>
+              {pokemonData.types.map((type: IType) => {
+                return <Text style={styles.typeValue}>{type.type.name}</Text>;
+              })}
+            </View>
+          </View>
+        )}
         {isDataEmpty() && (
           <Text style={styles.selectDescription}>
             Select your favorite pokemon from the pokedex and it will appear
@@ -102,6 +134,42 @@ const SelectScreen = (props: {route?: any}) => {
 };
 
 const styles = StyleSheet.create({
+  statSubsection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 10,
+  },
+  statContainer: {
+    width: 200,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  typeContainer: {
+    width: 200,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statLabel: {
+    color: 'gray',
+    fontSize: 16,
+  },
+  statValue: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  typeValue: {
+    fontSize: 20,
+    textTransform: 'uppercase',
+    fontStyle: 'italic',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
   selectContainer: {
     width: '100%',
     height: '100%',
