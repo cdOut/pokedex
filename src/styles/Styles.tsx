@@ -27,6 +27,20 @@ export const LISTSTYLES = StyleSheet.create({
   wrapper: {
     justifyContent: 'space-between',
   },
+  scrollContainer: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollText: {
+    fontSize: 20,
+  },
+  scrollImage: {
+    width: 10,
+    height: 20,
+    marginLeft: 5,
+  },
 });
 
 export const CARDSTYLES = StyleSheet.create({
@@ -244,6 +258,33 @@ export const STATSTYLES = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
     backgroundColor: COLORS.MEDIUM_GRAY,
+  },
+});
+
+export const LOADSTYLE = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.WHITE,
+    borderColor: COLORS.LIGHT_GRAY,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 25,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+  },
+  image: {
+    width: 30,
+    height: 30,
+    marginRight: 5,
+  },
+  text: {
+    fontWeight: 'bold',
   },
 });
 
