@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Image, Text, View} from 'react-native';
 import {AppContext} from '../../App';
 import AboutView from '../components/AboutView';
+import FadeInDescription from '../components/FadeInDescription';
 import FadeInImage from '../components/FadeInImage';
 import FavoriteButton from '../components/FavoriteButton';
 import TypeView from '../components/TypeView';
@@ -50,19 +51,6 @@ const FavoriteScreen = () => {
             <TypeView type={'TYPE'} />
             <TypeView type={'TYPE'} />
           </View>
-          <View>
-            <Text
-              style={[
-                SELECTSTYLES.subtitle,
-                STYLES.marginTop,
-                {
-                  color: COLORS.PLACEHOLDER,
-                },
-              ]}>
-              About
-            </Text>
-            <AboutView weight={0} height={0} moves={['None', 'None']} />
-          </View>
           <View style={STYLES.marginTopBig}>
             <Text
               style={[
@@ -78,6 +66,19 @@ const FavoriteScreen = () => {
               Browse the pokedex to find your favorite pokemon and you will be
               able to see some additional info about him here.
             </Text>
+          </View>
+          <View>
+            <Text
+              style={[
+                SELECTSTYLES.subtitle,
+                STYLES.marginTopBig,
+                {
+                  color: COLORS.PLACEHOLDER,
+                },
+              ]}>
+              About
+            </Text>
+            <AboutView weight={0} height={0} moves={['None', 'None']} />
           </View>
         </View>
       )}
@@ -98,11 +99,27 @@ const FavoriteScreen = () => {
               pokemon={favorite}
             />
           </View>
-          <View>
+          <View style={STYLES.marginTop}>
             <Text
               style={[
                 SELECTSTYLES.subtitle,
                 STYLES.marginTop,
+                {
+                  color: COLORS[favorite.types[0] as keyof typeof COLORS],
+                },
+              ]}>
+              Description
+            </Text>
+            <FadeInDescription
+              id={favorite.id}
+              styles={SELECTSTYLES.description}
+            />
+          </View>
+          <View>
+            <Text
+              style={[
+                SELECTSTYLES.subtitle,
+                STYLES.marginTopBig,
                 {
                   color: COLORS[favorite.types[0] as keyof typeof COLORS],
                 },

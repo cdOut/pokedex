@@ -18,9 +18,7 @@ const FavoriteButton = ({
   const {favorite, setFavorite} = useContext(AppContext);
 
   useEffect(() => {
-    if (favorite) {
-      setToggled(pokemon.name === favorite.name);
-    }
+    setToggled(pokemon.name === favorite?.name);
   }, [favorite, pokemon.name]);
 
   const handleOnPress = () => {
