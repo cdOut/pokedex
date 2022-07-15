@@ -5,6 +5,7 @@ const COLORS = {
   LIGHT_GRAY: '#E0E0E0',
   WHITE: '#FFFFFF',
   BACKGROUND: '#F7F7F7',
+  PLACEHOLDER: '#B8B8B8',
   // TYPE PALETTE
   ROCK: '#B69E31',
   GHOST: '#70559B',
@@ -24,6 +25,7 @@ const COLORS = {
   FIRE: '#F57D31',
   ELECTRIC: '#F9CF30',
   DRAGON: '#7037FF',
+  TYPE: '#666666',
 };
 
 export default COLORS;
