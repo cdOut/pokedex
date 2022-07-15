@@ -1,3 +1,5 @@
+import {IPokemon} from '../screens/ListScreen';
+
 export const getPokemonId = (url: string): string => {
   const urlArray = url.split('/');
   return urlArray[urlArray.length - 2];
@@ -14,6 +16,31 @@ export const stringifyPokemonId = (id: string): string => {
     idNum *= 10;
   }
   return id;
+};
+
+export const createPokemonObject = (result: {
+  id: any;
+  name: any;
+  types: {type: {name: string}}[];
+  weight: any;
+  height: any;
+  abilities: {ability: {name: string}}[];
+  stats: {base_stat: number}[];
+}): IPokemon => {
+  let pokemon: IPokemon = {
+    id: result.id,
+    name: result.name,
+    types: result.types.map((type: {type: {name: string}}) =>
+      type.type.name.toUpperCase(),
+    ),
+    weight: result.weight,
+    height: result.height,
+    moves: result.abilities.map(
+      (ability: {ability: {name: string}}) => ability.ability.name,
+    ),
+    stats: result.stats.map((stat: {base_stat: number}) => stat.base_stat),
+  };
+  return pokemon;
 };
 
 export const fetchPokemonData = async (id: string) => {

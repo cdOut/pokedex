@@ -19,6 +19,9 @@ const PokemonCard = ({pokemon}: {pokemon: IPokemon}) => {
       entering={ZoomIn}
       style={[
         CARDSTYLES.container,
+        (parseInt(pokemon.id, 10) - 2) % 3 === 0
+          ? CARDSTYLES.middle
+          : undefined,
         {borderColor: COLORS[pokemon.types[0] as keyof typeof COLORS]},
       ]}>
       <TouchableOpacity

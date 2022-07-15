@@ -43,6 +43,34 @@ export const LISTSTYLES = StyleSheet.create({
   },
 });
 
+export const SEARCHSTYLES = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  input: {
+    flex: 7,
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 10,
+    marginLeft: 10,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 2,
+  },
+  buttonImage: {
+    width: 12,
+    height: 12,
+  },
+  buttonText: {
+    marginLeft: 5,
+  },
+});
+
 export const CARDSTYLES = StyleSheet.create({
   container: {
     flex: 1,
