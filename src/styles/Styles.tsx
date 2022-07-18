@@ -80,6 +80,10 @@ export const CARDSTYLES = StyleSheet.create({
     borderColor: COLORS.MEDIUM_GRAY,
     backgroundColor: COLORS.WHITE,
   },
+  hidden: {
+    flex: 1,
+    marginVertical: 5,
+  },
   middle: {
     marginHorizontal: 10,
   },

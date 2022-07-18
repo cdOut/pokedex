@@ -49,6 +49,12 @@ export const fetchPokemonData = async (id: string) => {
   return json;
 };
 
+export const fetchAllPokemon = async () => {
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=905');
+  const json = await response.json();
+  return json.results;
+};
+
 export const fetchPokemonDescription = async (id: string, amount: number) => {
   const response = await fetch(
     `https://pokeapi.co/api/v2/pokemon-species/${id}`,
